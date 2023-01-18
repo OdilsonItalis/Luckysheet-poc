@@ -23,7 +23,7 @@ const listAllCellData = async (req, res, next) => {
 const saveCellData = async (req, res, next) => {
     try {
         const { body } = req;
-        const response = await cellDataModel.saveCellData(body.data);
+        const response = await cellDataModel.saveCellData(body);
         res.status(200).send({
             statusCode: 200,
             message: 'Save All Cell Data Success!',

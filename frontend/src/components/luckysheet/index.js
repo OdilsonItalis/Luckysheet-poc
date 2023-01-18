@@ -12,15 +12,11 @@ const luckyCss = {
 const Luckysheet = () => {
    const luckysheet = window.luckysheet;
 
-   useEffect(() => {
-      const getCellData = async () => {
-         await axios.get('http://localhost:4000/get-all-cell-data').then((response) => {
-            console.log("*******************", response);
-         });
-      }
-
-      getCellData();
-   }, [])
+   const getCellData = async () => {
+      await axios.get('http://localhost:4000/get-all-cell-data').then((response) => {
+         console.log("*******************", response);
+      });
+   }
 
    const sheetCellData = [{
       "r": 0,
@@ -77,9 +73,11 @@ const Luckysheet = () => {
          container: "luckysheet",
          data: sheetData,
       });
+
+      getCellData();
    }, []);
 
-   const onSaveClick = () => {
+   const onSaveClick = async () => {
       const allSheetsData = luckysheet.getAllSheets();
       const saveData = allSheetsData[0].celldata.map((item) => {
          return {
@@ -89,6 +87,8 @@ const Luckysheet = () => {
             value: item.v.v,
          }
       });
+
+      await axios.post('http://localhost:4000/save-cell-data', saveData).then((res) => console.log('======================>>>>>', res))
    }
    return (
       <div className={styles.container}>
