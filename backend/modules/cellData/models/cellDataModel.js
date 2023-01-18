@@ -1,13 +1,21 @@
+const MongoClient = require('mongodb').MongoClient;
+
+const uri = 'mongodb://localhost:27017';
+const client = new MongoClient(uri);
+const database = client.db("luckysheet");
+const cellDataCollection = database.collection("cellData");
+
 const List = async () => {
-    return "all cell data"
+   const result = await cellDataCollection.find({}).toArray();
+   return result;
 };
 
 const saveCellData = async (data) => {
-    console.log("---------------->>>>", data);
-    return "Save data success!";
+   const result = await cellDataCollection.insertMany(data, { ordered: true });
+   return result;
 }
 
 module.exports = {
-    List,
-    saveCellData,
+   List,
+   saveCellData,
 }
