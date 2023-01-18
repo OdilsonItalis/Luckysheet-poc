@@ -1,18 +1,25 @@
-const MongoClient = require('mongodb').MongoClient;
+const { MongoClient } = require('mongodb');
 
 const uri = 'mongodb://localhost:27017';
 const client = new MongoClient(uri);
 const database = client.db("luckysheet");
-const cellDataCollection = database.collection("cellData");
+const sheetsDataCollection = database.collection("sheetsData");
 
 const List = async () => {
-   const result = await cellDataCollection.find({}).toArray();
+   const result = await sheetsDataCollection.find({}).toArray();
    return result;
 };
 
 const saveCellData = async (data) => {
-   const result = await cellDataCollection.insertMany(data, { ordered: true });
-   return result;
+   try {
+      await sheetsDataCollection.deleteMany({});
+      if (data.length > 0) {
+         await sheetsDataCollection.insertMany(data);
+      }
+      return data;
+   } catch (err) {
+      throw err;
+   }
 }
 
 module.exports = {
